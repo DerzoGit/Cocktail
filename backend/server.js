@@ -13,10 +13,12 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.get("/", (req, res) => res.send("I'm online"))
-app.get("*", (req, res) => res.status(501).send("Where the hell are you going ?"))
-
 app.use("/users", userRoutes)
 app.use("/cocktails", cocktailRoutes)
+
+app.get("*", (req, res) => res.status(501).send("Where the hell are you going ?"))
+
+
 
 DB.authenticate()
     .then(() => console.log("Database connection OK"))
