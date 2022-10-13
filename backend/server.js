@@ -1,5 +1,6 @@
 const express = require("express")
 const cors = require("cors")
+const checkTokenMiddleware = require("./middleware/checkToken")
 
 let DB = require("./db.config")
 
@@ -14,7 +15,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 app.get("/", (req, res) => res.send("I'm online"))
-app.use("/users", userRoutes)
+app.use("/users", checkTokenMiddleware, userRoutes)
 app.use("/cocktails", cocktailRoutes)
 app.use("/auth", authRoutes)
 
