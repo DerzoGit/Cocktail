@@ -29,27 +29,21 @@ router.get("/:id", (req, res) => {
 })
 
 router.put("", (req, res) => {
-    const { nom, prenom, pseudo, email, password } = req.body
+    const { userId, nom, description, recette } = req.body
 
-    if(!nom || !prenom || !pseudo || !email || !password) {
+    if(!userId || !nom || !description || !recette) {
         return res.status(400).json({ message: "Missing data" })
     }
 
-    db.Cocktail.findOne({ where: { email: email }, raw: true })
+    db.Cocktail.findOne({ where: { nom: nom }, raw: true })
         .then(cocktail => {
             if(cocktail !== null) {
                 return res.status(409).json({ message: `The cocktail ${nom} already exist` })
             }
 
-            bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT_ROUND))
-                .then(hash => {
-                    req.body.password = hash
-
-                    db.Cocktail.create(req.body)
-                        .then(cocktail => res.json({ message: "Cocktail created", data:cocktail }))
-                        .catch(err => res.status(500).json({ message: "Database error", error: err }))
-                })
-                .catch(err => res.status(500).json({ message: "Hash process error", error: err }))
+            db.Cocktail.create(req.body)
+            .then(cocktail => res.json({ message: "Cocktail created", data:cocktail }))
+            .catch(err => res.status(500).json({ message: "Database error", error: err }))
         })
         .catch(err => res.status(500).json({ message: "Database error", error: err }))
 })
