@@ -5,6 +5,7 @@ let DB = require("./db.config")
 
 const userRoutes = require("./routes/users")
 const cocktailRoutes = require("./routes/cocktails")
+const authRoutes = require("./routes/auth")
 
 const app = express()
 
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true }))
 app.get("/", (req, res) => res.send("I'm online"))
 app.use("/users", userRoutes)
 app.use("/cocktails", cocktailRoutes)
+app.use("/auth", authRoutes)
 
 app.get("*", (req, res) => res.status(501).send("Where the hell are you going ?"))
 
