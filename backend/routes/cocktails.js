@@ -4,6 +4,12 @@ const db = require("../models/index")
 
 let router = express.Router()
 
+router.use((req, res, next) => {
+    const event = new Date()
+    console.log("COCKTAIL Time:", event.toString())
+    next()
+})
+
 router.get("", (req, res) => {
     db.Cocktail.findAll()
         .then(cocktails => res.json({ data: cocktails }))

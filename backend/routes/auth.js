@@ -6,6 +6,12 @@ const db = require("../models/index")
 
 let router = express.Router()
 
+router.use((req, res, next) => {
+    const event = new Date()
+    console.log("AUTH Time:", event.toString())
+    next()
+})
+
 router.post("/login", (req, res) => {
     const { email, password } = req.body
 

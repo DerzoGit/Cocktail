@@ -5,6 +5,12 @@ const db = require("../models/index")
 
 let router = express.Router()
 
+router.use((req, res, next) => {
+    const event = new Date()
+    console.log("USER Time:", event.toString())
+    next()
+})
+
 router.get("", (req, res) => {
     db.User.findAll()
         .then(users => res.json({ data: users }))
