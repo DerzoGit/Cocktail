@@ -1,4 +1,5 @@
 const express = require("express")
+const checkTokenMiddleware = require("../middleware/checkToken")
 
 const db = require("../models/index")
 
@@ -33,7 +34,7 @@ router.get("/:id", (req, res) => {
     .catch(err => res.status(500).json({ message: "Database error", error: err }))
 })
 
-router.put("", (req, res) => {
+router.put("", checkTokenMiddleware, (req, res) => {
     const { userId, nom, description, recette } = req.body
 
     if(!userId || !nom || !description || !recette) {
@@ -53,7 +54,7 @@ router.put("", (req, res) => {
         .catch(err => res.status(500).json({ message: "Database error", error: err }))
 })
 
-router.patch("/:id", (req, res) => {
+router.patch("/:id", checkTokenMiddleware, (req, res) => {
     let cocktailId = parseInt(req.params.id)
 
     if(!cocktailId) {
@@ -73,7 +74,7 @@ router.patch("/:id", (req, res) => {
         .catch(err => res.status(500).json({ message: "Database error", error: err }))
 })
 
-router.post("/untrash/:id", (req, res) => {
+router.post("/untrash/:id", checkTokenMiddleware, (req, res) => {
     let cocktailId = parseInt(req.params.id)
 
     if(!cocktailId) {
@@ -85,7 +86,7 @@ router.post("/untrash/:id", (req, res) => {
         .catch(err => res.status(500).json( { message: "Database error", error: err }))
 })
 
-router.delete("/trash/:id", (req, res) => {
+router.delete("/trash/:id", checkTokenMiddleware, (req, res) => {
     let cocktailId = parseInt(req.params.id)
 
     if(!cocktailId) {
@@ -97,7 +98,7 @@ router.delete("/trash/:id", (req, res) => {
         .catch(err => res.status(500).json({ message: "Database error", error: err }))
 })
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", checkTokenMiddleware, (req, res) => {
     let cocktailId = parseInt(req.params.id)
 
     if(!cocktailId) {
