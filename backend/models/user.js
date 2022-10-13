@@ -17,4 +17,8 @@ User.init({
         paranoid: true // Soft delete
     })
 
+// User.sync()
+// User.sync({ force: true })
+// User.sync({ alter: true })
+
     module.exports = User;

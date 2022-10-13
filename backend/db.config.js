@@ -10,5 +10,7 @@ let sequelize = new Sequelize(
 )
 
 // sequelize.sync()
+// sequelize.sync({ force: true })
+// sequelize.sync({ alter: true })
 
 module.exports = sequelize

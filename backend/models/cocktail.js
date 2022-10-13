@@ -16,4 +16,8 @@ Cocktail.init({
         paranoid: true // Soft delete
     })
 
+// Cocktail.sync()
+// Cocktail.sync({ force: true })
+// Cocktail.sync({ alter: true })
+
     module.exports = Cocktail;
