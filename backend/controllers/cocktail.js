@@ -1,5 +1,4 @@
 const db = require("../models/index")
-const { removeAttribute } = require("../models/user")
 
 exports.getAllCocktails = (req, res) => {
     db.Cocktail.findAll()
@@ -67,7 +66,6 @@ exports.updateCocktail = async (req, res) => {
     } catch(err) {
         return res.status(500).json({ message: "Database error", error: err })
     }
-
 }
 
 exports.untrashCocktail = (req, res) => {
