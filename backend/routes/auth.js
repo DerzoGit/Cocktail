@@ -19,7 +19,7 @@ router.post("/login", (req, res) => {
                 return res.status(401).json({ message: "This account doesn't exist" })
             }
 
-            bcript.compare(password, user.password)
+            bcrypt.compare(password, user.password)
                 .then(test => {
                     if(!test) {
                         return res.status(401).json({ message: "Wrong password" })
