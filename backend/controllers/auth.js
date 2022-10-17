@@ -1,23 +1,24 @@
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const db = require("../models/index")
+const { AuthenticationError } = require("../middleware/customError")
 
-exports.login = async (req, res) => {
-    const { email, password } = req.body
-
-    if(!email || !password) {
-        return res.status(400).json({ message: "Bad email or password" })
-    }
-
+exports.login = async (req, res, next) => {
     try {
+        const { email, password } = req.body
+
+        if(!email || !password) {
+            throw new AuthenticationError("Bad email or password", 0)
+        }
+        
         let user = await db.User.findOne({ where: { email: email }, raw: true })
         if(user === null) {
-            return res.status(401).json({ message: "This account doesn't exist" })
+            throw new AuthenticationError("This account doesn't exist", 1)
         }
 
         let test = await bcrypt.compare(password, user.password)
         if(!test) {
-            return res.status(401).json({ message: "Wrong password" })
+            throw new AuthenticationError("Wrong password", 2)
         }
 
         const token = jwt.sign({
@@ -29,10 +30,6 @@ exports.login = async (req, res) => {
 
         return res.json({ access_token: token })
     } catch(err) {
-        if(err.name == "SequelizeDatabaseError") {
-            res.status(500).json({ message: "Database Error", error: err })
-        }
-        res.status(500).json({ message: "Login process failed", error: err })
-        
+        next(err)
     }
 }
