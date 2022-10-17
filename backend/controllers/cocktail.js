@@ -15,7 +15,7 @@ exports.getCocktail = async (req, res, next) => {
             throw new RequestError("Missing parameter")
         }
 
-        let cocktail = await db.Cocktail.findOne({ where: { idd: cocktailId }, raw: true })
+        let cocktail = await db.Cocktail.findOne({ where: { id: cocktailId }, raw: true })
     
         if((cocktail == null)) {
             throw new CocktailError("This cocktail doesn't exist !", 0)
