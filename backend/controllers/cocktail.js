@@ -1,105 +1,115 @@
 const db = require("../models/index")
+const { RequestError, CocktailError } = require("../error/customError")
 
-exports.getAllCocktails = (req, res) => {
+exports.getAllCocktails = (req, res, next) => {
     db.Cocktail.findAll()
         .then(cocktails => res.json({ data: cocktails }))
-        .catch(err => res.status(500).json({ message: "Database Error", error: err }))
+        .catch(err => next(err))
 }
 
-exports.getCocktail = async (req, res) => {
-    let cocktailId = parseInt(req.params.id)
-
-    if(!cocktailId) {
-        return res.json(400).json({ message: "Missing parameter" })
-    }
-
+exports.getCocktail = async (req, res, next) => {
     try {
-        let cocktail = await db.Cocktail.findOne({ where: { id: cocktailId }, raw: true })
+        let cocktailId = parseInt(req.params.id)
+
+        if(!cocktailId) {
+            throw new RequestError("Missing parameter")
+        }
+
+        let cocktail = await db.Cocktail.findOne({ where: { idd: cocktailId }, raw: true })
     
-        if((cocktail == null)){
-            return res.status(404).json({ message: "This cocktail doesn't exist !" })
+        if((cocktail == null)) {
+            throw new CocktailError("This cocktail doesn't exist !", 0)
         }
         return res.json({ data: cocktail })
 
     } catch(err) {
-        return res.status(500).json({ message: "Database error", error: err })
+        next(err)
     }
 }
 
-exports.addCocktail = async (req, res) => {
-    const { userId, nom, description, recette } = req.body
-
-    if(!userId || !nom || !description || !recette) {
-        return res.status(400).json({ message: "Missing data" })
-    }
-
+exports.addCocktail = async (req, res, next) => {
     try {
+        const { userId, nom, description, recette } = req.body
+
+        if(!userId || !nom || !description || !recette) {
+            throw new RequestError("Missing data")
+        }
+    
         let cocktail = await db.Cocktail.findOne({ where: { nom: nom }, raw: true })
         if(cocktail !== null) {
-            return res.status(409).json({ message: `The cocktail ${nom} already exist` })
+            throw new CocktailError(`The cocktail ${nom} already exist`, 1)
         }
 
         cocktail = await db.Cocktail.create(req.body)
         return res.json({ message: "Cocktail created", data:cocktail })
 
     } catch(err) {
-        return res.status(500).json({ message: "Database error", error: err })
+        next(err)
     }
 }
 
-exports.updateCocktail = async (req, res) => {
-    let cocktailId = parseInt(req.params.id)
-
-    if(!cocktailId) {
-        return res.status(400).json({ message: "Missing parameter" })
-    }
-
+exports.updateCocktail = async (req, res, next) => {
     try {
+        let cocktailId = parseInt(req.params.id)
+
+        if(!cocktailId) {
+            throw new RequestError("Missing parameter")
+        }
+
         let cocktail = await db.Cocktail.findOne({ where: { id: cocktailId }, raw: true })
         if(cocktail === null) {
-            return res.status(404).json({ message: "This cocktail doesn't exist" })
+            throw new CocktailError("This cocktail doesn't exist !", 0)
         }
 
         cocktail = await db.Cocktail.update(req.body, { where: { id: cocktailId } })
         return res.status(200).json({ message: "Cocktail updated" })
 
     } catch(err) {
-        return res.status(500).json({ message: "Database error", error: err })
+        next(err)
     }
 }
 
-exports.untrashCocktail = (req, res) => {
-    let cocktailId = parseInt(req.params.id)
+exports.untrashCocktail = async (req, res, next) => {
+    try {
+        let cocktailId = parseInt(req.params.id)
 
-    if(!cocktailId) {
-        return res.status(400).json({ message: "Missing parameter" })
-    }
-
-    db.Cocktail.restore({ where: { id: cocktailId } })
-        .then(() => res.status(204).json({}))
-        .catch(err => res.status(500).json( { message: "Database error", error: err }))
+        if(!cocktailId) {
+            throw new RequestError("Missing parameter")
+        }
+    
+        await db.Cocktail.restore({ where: { id: cocktailId } })
+            return res.status(204).json({})
+    } catch(err) {
+        next(err)
+    }   
 }
 
-exports.trashCocktail = (req, res) => {
-    let cocktailId = parseInt(req.params.id)
+exports.trashCocktail = async (req, res, next) => {
+    try {
+        let cocktailId = parseInt(req.params.id)
 
-    if(!cocktailId) {
-        return res.status(400).json({ message: "Missing parameter" })
+        if(!cocktailId) {
+            throw new RequestError("Missing parameter")
+        }
+    
+        await db.Cocktail.destroy({ where: { id: cocktailId } })
+            return res.status(204).json({})
+    } catch(err) {
+        next(err)
     }
-
-    db.Cocktail.destroy({ where: { id: cocktailId } })
-        .then(() => res.status(204).json({}))
-        .catch(err => res.status(500).json({ message: "Database error", error: err }))
 }
 
-exports.deleteCocktail = (req, res) => {
-    let cocktailId = parseInt(req.params.id)
+exports.deleteCocktail = async (req, res, next) => {
+    try {
+        let cocktailId = parseInt(req.params.id)
 
-    if(!cocktailId) {
-        return res.status(400).json({ message: "Missing parameter" })
+        if(!cocktailId) {
+            throw new RequestError("Missing parameter")
+        }
+
+        await db.Cocktail.destroy({ where: { id: cocktailId }, force: true })
+            return res.status(204).json({})
+    } catch(err) {
+        next(err)
     }
-
-    db.Cocktail.destroy({ where: { id: cocktailId }, force: true })
-        .then(() => res.status(204).json({}))
-        .catch(err => res.status(500).json({ message: "Database error", error: err }))
 }
