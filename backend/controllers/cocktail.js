@@ -1,5 +1,5 @@
 const db = require("../models/index")
-const { RequestError, CocktailError } = require("../error/customError")
+const { RequestError, CocktailError } = require("../middleware/customError")
 
 exports.getAllCocktails = (req, res, next) => {
     db.Cocktail.findAll()
