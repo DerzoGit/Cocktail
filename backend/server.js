@@ -1,7 +1,7 @@
 const express = require("express")
 const cors = require("cors")
 const checkTokenMiddleware = require("./middleware/checkToken")
-const errorHandler = require("./error/errorHandler")
+const errorHandler = require("./middleware/errorHandler")
 
 let DB = require("./db.config")
 
