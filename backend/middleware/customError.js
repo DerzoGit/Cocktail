@@ -8,6 +8,13 @@ class MainError extends Error {
 
         switch(this.constructor.name) {
             case "AuthenticationError":
+                if(errorType == 0) {
+                    this.statusCode = 400
+                } else if(errorType == 1) {
+                    this.statusCode = 404
+                } else if(errorType == 2) {
+                    this.statusCode = 401
+                }
                 break
             case "UserError":
                 if(errorType == 0) {
@@ -32,21 +39,13 @@ class MainError extends Error {
     }
 }
 
-class AuthenticationError extends MainError {
+class AuthenticationError extends MainError {}
 
-}
+class UserError extends MainError {}
 
-class UserError extends MainError {
+class CocktailError extends MainError {}
 
-}
-
-class CocktailError extends MainError {
-
-}
-
-class RequestError extends MainError {
-
-}
+class RequestError extends MainError {}
 
 module.exports = {
     MainError, AuthenticationError, UserError, CocktailError, RequestError
