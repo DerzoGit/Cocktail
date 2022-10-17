@@ -1,6 +1,7 @@
 const express = require("express")
 const cors = require("cors")
 const checkTokenMiddleware = require("./middleware/checkToken")
+const errorHandler = require("./error/errorHandler")
 
 let DB = require("./db.config")
 
@@ -21,6 +22,7 @@ app.use("/auth", authRoutes)
 
 app.get("*", (req, res) => res.status(501).send("Where the hell are you going ?"))
 
+app.use(errorHandler)
 
 
 DB.authenticate()
