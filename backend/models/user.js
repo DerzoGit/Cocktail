@@ -1,5 +1,6 @@
 const { Model, DataTypes } = require("sequelize")
 const sequelize = require("../db.config")
+const bcrypt = require("bcrypt")
 
 class User extends Model {}
 
@@ -16,6 +17,15 @@ User.init({
         tableName: "users",
         paranoid: true // Soft delete
     })
+
+User.beforeCreate( async (user, options) => {
+    let hash = await bcrypt.hash(user.password, parseInt(process.env.BCRYPT_SALT_ROUND))
+    user.password = hash
+})
+
+User.checkPassword = async (password, originel) => {
+    return await bcrypt.compare(password, originel)
+}
 
 // User.sync()
 // User.sync({ force: true })

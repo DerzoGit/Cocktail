@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt")
+// const bcrypt = require("bcrypt")
 const db = require("../models/index")
 const { RequestError, UserError } = require("../middleware/customError")
 
@@ -39,8 +39,8 @@ exports.addUser = async (req, res, next) => {
                     throw new UserError(`The user ${nom} already exist`, 1)
                 }
     
-                let hash = await bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT_ROUND))
-                req.body.password = hash
+                // let hash = await bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT_ROUND))
+                // req.body.password = hash
     
                 user = await db.User.create(req.body)
                 return res.json({ message: "User created", data:user })

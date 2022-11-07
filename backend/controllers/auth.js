@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt")
+// const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const db = require("../models/index")
 const { AuthenticationError } = require("../middleware/customError")
@@ -16,7 +16,8 @@ exports.login = async (req, res, next) => {
             throw new AuthenticationError("This account doesn't exist", 1)
         }
 
-        let test = await bcrypt.compare(password, user.password)
+        // let test = await bcrypt.compare(password, user.password)
+        let test = await db.User.checkPassword(password, user.password)
         if(!test) {
             throw new AuthenticationError("Wrong password", 2)
         }
