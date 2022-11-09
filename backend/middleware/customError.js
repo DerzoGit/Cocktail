@@ -21,8 +21,6 @@ class MainError extends Error {
             case "UserError":
                 if(errorType == 0) {
                     this.statusCode = 404
-                } else {
-                    this.statusCode = 409
                 }
                 break
             case "CocktailError":
