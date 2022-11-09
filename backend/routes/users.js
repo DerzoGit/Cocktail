@@ -12,7 +12,6 @@ router.use((req, res, next) => {
 
 router.get("/", userCtrl.getAllUsers)
 router.get("/:id", userCtrl.getUser)
-router.put("", userCtrl.addUser)
 router.patch("/:id", userCtrl.updateUser)
 router.post("/untrash/:id", userCtrl.untrashUser)
 router.delete("/trash/:id", userCtrl.trashUser)
