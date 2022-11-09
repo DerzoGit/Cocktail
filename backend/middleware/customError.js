@@ -14,6 +14,8 @@ class MainError extends Error {
                     this.statusCode = 404
                 } else if(errorType == 2) {
                     this.statusCode = 401
+                } else if(errorType == 3) {
+                    this.statusCode = 409
                 }
                 break
             case "UserError":
