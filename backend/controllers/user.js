@@ -1,5 +1,4 @@
-// const bcrypt = require("bcrypt")
-const db = require("../models/index")
+const db = require("../db.config")
 const { RequestError, UserError } = require("../middleware/customError")
 
 exports.getAllUsers = (req, res, next) => {
@@ -17,10 +16,10 @@ exports.getUser = async (req, res, next) => {
         }
     
         let user = await db.User.findOne({ where: { id: userId } })
-            if((user == null)){
-                throw new UserError("This user doesn't exist !", 0)
-            }
-            return res.json({ data: user })
+        if((user == null)){
+            throw new UserError("This user doesn't exist !", 0)
+        }
+        return res.json({ data: user })
     } catch(err) {
         next(err)
     }
@@ -35,15 +34,12 @@ exports.addUser = async (req, res, next) => {
         }
     
         let user = await db.User.findOne({ where: { email: email } })
-                if(user !== null) {
-                    throw new UserError(`The user ${nom} already exist`, 1)
-                }
-    
-                // let hash = await bcrypt.hash(password, parseInt(process.env.BCRYPT_SALT_ROUND))
-                // req.body.password = hash
-    
-                user = await db.User.create(req.body)
-                return res.json({ message: "User created", data:user })
+        if(user !== null) {
+            throw new UserError(`The user ${nom} already exist`, 1)
+        }
+
+        user = await db.User.create(req.body)
+        return res.json({ message: "User created", data:user })
     } catch(err) {
         next(err)
     }
@@ -58,12 +54,12 @@ exports.updateUser = async (req, res, next) => {
         }
     
         let user = await db.User.findOne({ where: { id: userId } })
-                if(user === null) {
-                    throw new UserError("This user doesn't exist", 0)
-                }
-    
-                user = await db.User.update(req.body, { where: { id: userId } })
-                return res.status(200).json({ message: "User updated" })
+        if(user === null) {
+            throw new UserError("This user doesn't exist", 0)
+        }
+
+        user = await db.User.update(req.body, { where: { id: userId } })
+        return res.status(200).json({ message: "User updated" })
 
     } catch(err) {
         next(err)
