@@ -25,7 +25,7 @@ app.get("*", (req, res) => res.status(501).send("Where the hell are you going ?"
 app.use(errorHandler)
 
 
-DB.authenticate()
+DB.sequelize.authenticate()
     .then(() => console.log("Database connection OK"))
     .then(() => {
         app.listen(process.env.SERVER_PORT, () => {
