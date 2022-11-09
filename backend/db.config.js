@@ -9,8 +9,17 @@ let sequelize = new Sequelize(
     }
 )
 
-// sequelize.sync()
-// sequelize.sync({ force: true })
-// sequelize.sync({ alter: true })
+const db = {}
 
-module.exports = sequelize
+db.sequelize = sequelize
+db.User = require("./models/user")(sequelize)
+db.Cocktail = require("./models/cocktail")(sequelize)
+
+db.User.hasMany(db.Cocktail, { foreignKey: "userId", onDelete: "cascade" })
+db.Cocktail.belongsTo(db.User, { foreignKey: "userId" })
+
+// db.sequelize.sync()
+// sequelize.sync({ force: true })
+db.sequelize.sync({ alter: true })
+
+module.exports = db
