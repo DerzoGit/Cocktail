@@ -1,4 +1,4 @@
-const db = require("../models/index")
+const db = require("../db.config")
 const { RequestError, CocktailError } = require("../middleware/customError")
 
 exports.getAllCocktails = (req, res, next) => {
