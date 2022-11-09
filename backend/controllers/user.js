@@ -12,7 +12,7 @@ exports.getUser = async (req, res, next) => {
         let userId = parseInt(req.params.id)
 
         if(!userId) {
-            throw new UserError("Missing Parameter")
+            throw new RequestError("Missing Parameter")
         }
     
         let user = await db.User.findOne({ where: { id: userId } })
@@ -25,32 +25,12 @@ exports.getUser = async (req, res, next) => {
     }
 }
 
-exports.addUser = async (req, res, next) => {
-    try {
-        const { nom, prenom, pseudo, email, password } = req.body
-
-        if(!nom || !prenom || !pseudo || !email || !password) {
-            throw new UserError("Missing paremeter")
-        }
-    
-        let user = await db.User.findOne({ where: { email: email } })
-        if(user !== null) {
-            throw new UserError(`The user ${nom} already exist`, 1)
-        }
-
-        user = await db.User.create(req.body)
-        return res.json({ message: "User created", data:user })
-    } catch(err) {
-        next(err)
-    }
-}
-
 exports.updateUser = async (req, res, next) => {
     try {
         let userId = parseInt(req.params.id)
 
         if(!userId) {
-            throw new UserError("Missing parameter")
+            throw new RequestError("Missing parameter")
         }
     
         let user = await db.User.findOne({ where: { id: userId } })
@@ -71,7 +51,7 @@ exports.untrashUser = async (req, res, next) => {
         let userId = parseInt(req.params.id)
 
         if(!userId) {
-            throw new UserError("Missing parameter")
+            throw new RequestError("Missing parameter")
         }
     
         await db.User.restore({ where: { id: userId } })
@@ -87,7 +67,7 @@ exports.trashUser = async (req, res, next) => {
         let userId = parseInt(req.params.id)
 
         if(!userId) {
-            throw new UserError("Missing parameter")
+            throw new RequestError("Missing parameter")
         }
     
         await db.User.destroy({ where: { id: userId } })
@@ -103,7 +83,7 @@ exports.deleteUser = async (req, res, next) => {
         let userId = parseInt(req.params.id)
 
         if(!userId) {
-            throw new UserError("Missing parameter")
+            throw new RequestError("Missing parameter")
         }
     
         await db.User.destroy({ where: { id: userId }, force: true })
