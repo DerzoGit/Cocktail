@@ -11,7 +11,7 @@ exports.login = async (req, res, next) => {
             throw new AuthenticationError("Bad email or password", 0)
         }
         
-        let user = await db.User.findOne({ where: { email: email }, raw: true })
+        let user = await db.User.findOne({ where: { email: email } })
         if(user === null) {
             throw new AuthenticationError("This account doesn't exist", 1)
         }
