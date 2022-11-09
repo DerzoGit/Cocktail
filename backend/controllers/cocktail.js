@@ -15,7 +15,7 @@ exports.getCocktail = async (req, res, next) => {
             throw new RequestError("Missing parameter")
         }
 
-        let cocktail = await db.Cocktail.findOne({ where: { id: cocktailId }, raw: true })
+        let cocktail = await db.Cocktail.findOne({ where: { id: cocktailId }, include: db.User })
     
         if((cocktail == null)) {
             throw new CocktailError("This cocktail doesn't exist !", 0)
@@ -35,7 +35,7 @@ exports.addCocktail = async (req, res, next) => {
             throw new RequestError("Missing data")
         }
     
-        let cocktail = await db.Cocktail.findOne({ where: { nom: nom }, raw: true })
+        let cocktail = await db.Cocktail.findOne({ where: { nom: nom } })
         if(cocktail !== null) {
             throw new CocktailError(`The cocktail ${nom} already exist`, 1)
         }
@@ -56,7 +56,7 @@ exports.updateCocktail = async (req, res, next) => {
             throw new RequestError("Missing parameter")
         }
 
-        let cocktail = await db.Cocktail.findOne({ where: { id: cocktailId }, raw: true })
+        let cocktail = await db.Cocktail.findOne({ where: { id: cocktailId } })
         if(cocktail === null) {
             throw new CocktailError("This cocktail doesn't exist !", 0)
         }
