@@ -9,6 +9,7 @@ router.use((req, res, next) => {
     next()
 })
 
+router.put("/signup", authCtrl.signup)
 router.post("/login", authCtrl.login)
 
 module.exports = router
