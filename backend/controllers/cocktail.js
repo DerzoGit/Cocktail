@@ -2,7 +2,7 @@ const db = require("../models/index")
 const { RequestError, CocktailError } = require("../middleware/customError")
 
 exports.getAllCocktails = (req, res, next) => {
-    db.Cocktail.findAll()
+    db.Cocktail.findAll({ include: { model: db.User, attributes: ["id", "pseudo", "email"] }})
         .then(cocktails => res.json({ data: cocktails }))
         .catch(err => next(err))
 }
@@ -15,7 +15,7 @@ exports.getCocktail = async (req, res, next) => {
             throw new RequestError("Missing parameter")
         }
 
-        let cocktail = await db.Cocktail.findOne({ where: { id: cocktailId }, include: db.User })
+        let cocktail = await db.Cocktail.findOne({ where: { id: cocktailId }, include: { model: db.User, attributes: ["id", "pseudo", "email"] } })
     
         if((cocktail == null)) {
             throw new CocktailError("This cocktail doesn't exist !", 0)
