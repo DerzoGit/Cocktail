@@ -16,7 +16,7 @@ exports.getUser = async (req, res, next) => {
             throw new UserError("Missing Parameter")
         }
     
-        let user = await db.User.findOne({ where: { id: userId }, raw: true })
+        let user = await db.User.findOne({ where: { id: userId } })
             if((user == null)){
                 throw new UserError("This user doesn't exist !", 0)
             }
@@ -34,7 +34,7 @@ exports.addUser = async (req, res, next) => {
             throw new UserError("Missing paremeter")
         }
     
-        let user = await db.User.findOne({ where: { email: email }, raw: true })
+        let user = await db.User.findOne({ where: { email: email } })
                 if(user !== null) {
                     throw new UserError(`The user ${nom} already exist`, 1)
                 }
@@ -57,7 +57,7 @@ exports.updateUser = async (req, res, next) => {
             throw new UserError("Missing parameter")
         }
     
-        let user = await db.User.findOne({ where: { id: userId }, raw: true })
+        let user = await db.User.findOne({ where: { id: userId } })
                 if(user === null) {
                     throw new UserError("This user doesn't exist", 0)
                 }
