@@ -1,18 +1,21 @@
 <template>
     <div class="public">
-        Public Layout
+        <PublicNav/>
         <router-view/>
     </div>
 </template>
 
 <script>
+import PublicNav from "@/components/PublicNav"
+
 export default {
-    name: "PublicLayout"
+    name: "PublicLayout",
+    components: {
+        PublicNav
+    }
 }
 </script>
 
 <style>
-    .public {
-        border: solid 1px red
-    }
+
 </style>
