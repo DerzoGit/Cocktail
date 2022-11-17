@@ -13,12 +13,17 @@ let updateUser = (user) => {
 }
 
 let createUser = (user) => {
-    return Axios.put("auth/signup/", user)
+    return Axios.put("/auth/signup/", user)
+}
+
+let deleteUser = (userId) => {
+    return Axios.delete("/users/"+userId)
 }
 
 export const userService = {
     getAllUsers,
     getUser,
     updateUser,
-    createUser
+    createUser,
+    deleteUser
 }
