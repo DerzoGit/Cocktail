@@ -4,6 +4,7 @@
         <table class="userIndex__table">
             <thead>
                 <tr>
+                    <th>&nbsp;</th>
                     <th>ID</th>
                     <th>Nom</th>
                     <th>Prénom</th>
@@ -13,6 +14,7 @@
             </thead>
             <tbody>
                 <tr v-for="(user, index) in users" :key="user.id">
+                    <td><span class="delButton" @click="del(index)">x</span></td>
                     <td>{{ user.id }}</td>
                     <td class="userIndex__table--edit" @click="goEdit(user.id)">{{ user.nom }}</td>
                     <td>{{ user.prenom }}</td>
@@ -36,14 +38,18 @@ export default {
     },
     methods: {
         goEdit(userId) {
-            console.log(userId)
             this.$router.push({ name: "userEdit", params: { id: userId }} )
+        },
+        del(index) {
+            userService.deleteUser(this.users[index].id)
+                .then(res => this.users.splice(index, 1))
+                .catch(err => console.log(err))
+
         }
     },
     mounted() {
         userService.getAllUsers()
             .then(res => {
-                console.log(res.data.data)
                 this.users = res.data.data
             })
             .catch(err => console.log(err))
@@ -70,5 +76,10 @@ export default {
                 }
             }
         }
+    }
+
+    .delButton {
+        cursor: pointer;
+        color:red;
     }
 </style>
