@@ -1,13 +1,15 @@
 <template>
     <div>
         User Edit works
+        <div>{{ id }}</div>
     </div>
 </template>
 
 <script>
 
 export default {
-    name: "UserEdit"
+    name: "UserEdit",
+    props: ["id"]
 }
 </script>
 
