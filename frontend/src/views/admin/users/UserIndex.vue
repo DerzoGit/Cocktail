@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class="userIndex">
         Liste des utilisateurs ({{ userCount }})
-        <table>
+        <table class="userIndex__table">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -14,7 +14,7 @@
             <tbody>
                 <tr v-for="(user, index) in users" :key="user.id">
                     <td>{{ user.id }}</td>
-                    <td>{{ user.nom }}</td>
+                    <td class="userIndex__table--edit" @click="goEdit(user.id)">{{ user.nom }}</td>
                     <td>{{ user.prenom }}</td>
                     <td>{{ user.email }}</td>
                     <td>{{ dateFormat[index] }}</td>
@@ -32,6 +32,12 @@ export default {
     data() {
         return {
             users: []
+        }
+    },
+    methods: {
+        goEdit(userId) {
+            console.log(userId)
+            this.$router.push({ name: "userEdit", params: { id: userId }} )
         }
     },
     mounted() {
@@ -53,6 +59,16 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss">
+    .userIndex {
+        &__table {
+            width: 100%;
+            &--edit {
+                cursor: pointer;
+                &:hover {
+                    font-weight: bold;
+                }
+            }
+        }
+    }
 </style>
