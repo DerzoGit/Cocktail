@@ -12,8 +12,13 @@ let updateUser = (user) => {
     return Axios.patch("/users/"+user.id, user)
 }
 
+let createUser = (user) => {
+    return Axios.put("auth/signup/", user)
+}
+
 export const userService = {
     getAllUsers,
     getUser,
-    updateUser
+    updateUser,
+    createUser
 }
