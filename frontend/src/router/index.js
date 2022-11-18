@@ -29,8 +29,8 @@ const routes = [
       { path: "users/edit/:id(\\d+)", name: "userEdit", component: Admin.UserEdit, props: true },
       { path: "users/add", component: Admin.UserAdd },
 
-      { path: "cocktails/index", component: Admin.CocktailIndex },
-      { path: "cocktails/edit/:id", component: Admin.CocktailEdit },
+      { path: "cocktails/index", name: "cocktailIndex", component: Admin.CocktailIndex },
+      { path: "cocktails/edit/:id(\\d+)?", name:"cocktailEdit", component: Admin.CocktailEdit },
       { path: "/:pathMatch(.*)*", redirect: "/admin/dashboard" }
     ]
   },
