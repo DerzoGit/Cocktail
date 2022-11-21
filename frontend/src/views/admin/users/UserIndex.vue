@@ -1,6 +1,6 @@
 <template>
     <div class="userIndex">
-        Liste des utilisateurs ({{ userCount }})
+        <h1>Liste des utilisateurs ({{ userCount }})</h1>
         <table class="userIndex__table">
             <thead>
                 <tr>
