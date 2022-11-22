@@ -1,9 +1,10 @@
 <template>
     <div>
-        <h1>Ajouter un cocktail</h1>
+        {{ id }}
+        <h1 v-if="!edition">Ajouter un cocktail</h1>
         <form @submit.prevent="add">
 
-            <!-- <input type="text" id="user_id" v-model="cocktail.userId" hidden> -->
+            <input type="text" id="user_id" v-model="cocktail.userId" hidden>
 
             <div class="form__group">
                 <label for="cocktail_nom">Nom</label>
@@ -26,18 +27,25 @@
 
 <script>
 import { cocktailService } from "@/_services/cocktail.service"
+import { watch } from "vue"
 
 export default {
     name: "CocktailEdit",
+    props: ["id"],
     data() {
         return {
             cocktail: {
-                userId: 1,
+                userId: 0,
                 nom: "",
                 description: "",
                 recette: ""
             }
         }
+    },
+    setup(props) {
+        watch(props, (value, old) => {
+            console.log(value.id, old)
+        })
     },
     methods: {
         add() {
@@ -45,7 +53,8 @@ export default {
                 .then(res => this.$router.push({ name: "cocktailIndex" }))
                 .catch(err => console.log(err))
         }
-    }
+    },
+    
 }
 </script>
 
