@@ -30,7 +30,7 @@ const routes = [
       { path: "users/add", component: Admin.UserAdd },
 
       { path: "cocktails/index", name: "cocktailIndex", component: Admin.CocktailIndex },
-      { path: "cocktails/edit/:id(\\d+)?", name:"cocktailEdit", component: Admin.CocktailEdit },
+      { path: "cocktails/edit/:id(\\d+)?", name:"cocktailEdit", component: Admin.CocktailEdit, props: true },
       { path: "/:pathMatch(.*)*", redirect: "/admin/dashboard" }
     ]
   },
