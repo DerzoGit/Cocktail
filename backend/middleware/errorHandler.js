@@ -6,6 +6,7 @@ const errorHandler = (err, req, res, next) => {
     debugLevel = 0
     message = {}
     
+    // Affichage plus ou moins complet des erreurs selon le niveau
     switch(debugLevel) {
         case 0:
             message = { message: err.message }
