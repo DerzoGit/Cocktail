@@ -1,9 +1,20 @@
 <template>
   <div>
+    <NotifBar/>
     <router-view/>
   </div>
   
 </template>
+
+<script>
+import NotifBar from "@/components/NotifBar"
+
+export default {
+  components: {
+    NotifBar
+  }
+}
+</script>
 
 <style lang="scss">
 #app {
