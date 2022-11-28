@@ -26,10 +26,12 @@ const routes = [
     children: [
       { path: "dashboard", name: "dashboard", component: Admin.Dashboard },
       { path: "users/index", name: "userIndex", component: Admin.UserIndex },
+      // :id(\\d+) > l'id est un ou plusieurs digit
       { path: "users/edit/:id(\\d+)", name: "userEdit", component: Admin.UserEdit, props: true },
       { path: "users/add", component: Admin.UserAdd },
 
       { path: "cocktails/index", name: "cocktailIndex", component: Admin.CocktailIndex },
+      // :id(\\d+)? > l'id est un, plusieurs digit ou peut être inexistant
       { path: "cocktails/edit/:id(\\d+)?", name:"cocktailEdit", component: Admin.CocktailEdit, props: true },
       { path: "/:pathMatch(.*)*", redirect: "/admin/dashboard" }
     ]
@@ -47,6 +49,7 @@ const router = createRouter({
   routes
 })
 
+// Verrouillage partie admin via Token avec authGard
 router.beforeEach((to, from, next) => {
   if(to.matched[0].name == "admin") {
     authGard()
