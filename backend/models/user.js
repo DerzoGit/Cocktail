@@ -1,13 +1,17 @@
+// Import des modules nécessaires
 const { DataTypes } = require("sequelize")
 const bcrypt = require("bcrypt")
 
+// Définition du model User
 module.exports = (sequelize) => {
     const User = sequelize.define("User", {
         id: { type: DataTypes.INTEGER(10), primaryKey: true, autoIncrement: true },
         nom: { type: DataTypes.STRING(100), defaultValue: "", allowNull: false },
         prenom: { type: DataTypes.STRING(100), defaultValue: "", allowNull: false },
         pseudo: { type: DataTypes.STRING(100), allowNull: false, unique: true },
+        // Validation de donnée avec isEmail
         email: { type: DataTypes.STRING, validate: { isEmail: true }, allowNull: false },
+        // Contrainte regex password
         password: { type: DataTypes.STRING(64), is: /^[0-9a-f]{64}$/i, allowNull: false }
         }, {
         paranoid: true // Soft delete
