@@ -1,5 +1,7 @@
+// Import des modules nécessaires
 const { Sequelize } = require("sequelize")
 
+// Connexion à la DB
 let sequelize = new Sequelize(
     process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
         host: process.env.DB_HOST,
@@ -9,6 +11,8 @@ let sequelize = new Sequelize(
     }
 )
 
+
+// Mise en place des relations 
 const db = {}
 
 db.sequelize = sequelize
@@ -18,6 +22,8 @@ db.Cocktail = require("./models/cocktail")(sequelize)
 db.User.hasMany(db.Cocktail, { foreignKey: "userId", onDelete: "cascade" })
 db.Cocktail.belongsTo(db.User, { foreignKey: "userId" })
 
+
+// Synchronisation des modèles
 // db.sequelize.sync()
 // sequelize.sync({ force: true })
 db.sequelize.sync({ alter: true })
